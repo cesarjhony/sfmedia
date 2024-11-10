@@ -30,7 +30,7 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
         <Drawer>
-          <Drawer.Screen name="(tabs)" options={{ headerShown: true }} />
+          <Drawer.Screen name="(drawer)" options={{ headerShown: false }} />
           <Drawer.Screen name="+not-found" />
         </Drawer>
     </GestureHandlerRootView>
