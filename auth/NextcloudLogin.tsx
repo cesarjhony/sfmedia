@@ -15,8 +15,16 @@ const NextcloudLogin = ({ serverAddress }) => {
       const response = await axios.post(`${serverAddress}/index.php/login/v2`); 
       console.log(response.data);
       setLoginUrl(response.data.login);
+<<<<<<< HEAD
       setPollUrl(response.data.poll.endpoint);
       setPollToken(response.data.poll.token);
+=======
+      console.log('vai 1');
+      setPollUrl(response.data.poll.endpoint);
+      console.log('vai 2');
+      setPollToken(response.data.poll.token);
+      console.log('vai 3');
+>>>>>>> origin/nextcloud-connection-quase
     } catch (error) {
       console.error('Error initializing login flow:', error);
     }
@@ -33,17 +41,28 @@ const NextcloudLogin = ({ serverAddress }) => {
   useEffect(() => {
     const pollServer = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.post(pollUrl, {
           token: pollToken
         });
         if (response.status === 200) {
           console.log('login REALIZADO')
+=======
+        const response = await axios.post(pollUrl, `token=${pollToken}`, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        });
+        if (response.status === 200) {
+          console.log(`login realizado token=${response.data.token}`);
+>>>>>>> origin/nextcloud-connection-quase
           setAccessToken(response.data.token);
           await SecureStore.setItemAsync('nextcloudAccessToken', response.data.token);
           await SecureStore.setItemAsync('nextcloudLoginName', response.data.loginName);
           await SecureStore.setItemAsync('nextcloudAppPassword', response.data.appPassword);
         }
       } catch (error) {
+<<<<<<< HEAD
         if(error.response.status===404)
           console.log('faça login')
         else
@@ -64,6 +83,21 @@ const NextcloudLogin = ({ serverAddress }) => {
     };
 
     checkStoredCredentials();
+=======
+        if (error.response.status === 404) {
+          console.log('Error 404: faça login');
+          console.log(`token=${pollToken}`);
+
+        }else
+        console.error('Error polling server:', error);
+      }
+    };
+
+    if (pollUrl && pollToken) {
+      const interval = setInterval(pollServer, 5000);
+      return () => clearInterval(interval);
+    }
+>>>>>>> origin/nextcloud-connection-quase
   }, [pollUrl, pollToken]);
 
   useEffect(() => {
