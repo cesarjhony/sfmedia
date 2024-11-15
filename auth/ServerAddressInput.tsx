@@ -8,6 +8,7 @@ const ServerAddressInput = () => {
   const handleLogin = () => {
     // Pass the server address to the NextcloudLogin component
     // This can be done by setting a state or using a context
+    setServerAddress(serverAddress);
   };
 
   return (

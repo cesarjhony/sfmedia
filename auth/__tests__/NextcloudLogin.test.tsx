@@ -16,14 +16,12 @@ describe('NextcloudLogin', () => {
     const mockResponse = { data: { login: 'loginUrl', poll: 'pollUrl' } };
     axios.post.mockResolvedValueOnce(mockResponse);
 
-    //const { getByText } = render(<NextcloudLogin />);
     let getByText = {};
     act(async () => {
-      const { getByText2 } = await TestRenderer.create(<NextcloudLogin />);
+      const { getByText2 } = await TestRenderer.create(<NextcloudLogin serverAddress="https://example.com" />);
       getByText = getByText2;
-      console.log(getByText);
     });
-    await waitFor(() => expect(axios.post).toHaveBeenCalledWith('<server>/index.php/login/flow'));
+    await waitFor(() => expect(axios.post).toHaveBeenCalledWith('https://example.com/index.php/login/flow'));
     await waitFor(() => expect(getByText('Login with Nextcloud')).toBeTruthy());
   }); 
 
@@ -31,10 +29,9 @@ describe('NextcloudLogin', () => {
     const mockResponse = { data: { login: 'loginUrl', poll: 'pollUrl' } };
     axios.post.mockResolvedValueOnce(mockResponse);
 
-    //const { getByText } = render(<NextcloudLogin />);
     let getByText = {};
     act(() => {
-      const { getByText2 } = TestRenderer.create(<NextcloudLogin />);
+      const { getByText2 } = TestRenderer.create(<NextcloudLogin serverAddress="https://example.com" />);
       getByText = getByText2;
     });
     fireEvent.press(getByText('Login with Nextcloud'));
@@ -46,10 +43,9 @@ describe('NextcloudLogin', () => {
     axios.post.mockResolvedValueOnce(mockResponse);
     axios.get.mockResolvedValueOnce({ status: 200, data: { token: 'accessToken' } });
 
-    //render(<NextcloudLogin />);
     let getByText = {};
     act(() => {
-      const { getByText2 } = TestRenderer.create(<NextcloudLogin />);
+      const { getByText2 } = TestRenderer.create(<NextcloudLogin serverAddress="https://example.com" />);
       getByText = getByText2;
     });
     await waitFor(() => expect(axios.get).toHaveBeenCalledWith('pollUrl'));
@@ -61,10 +57,9 @@ describe('NextcloudLogin', () => {
     axios.post.mockResolvedValueOnce(mockResponse);
     axios.get.mockResolvedValueOnce({ status: 200, data: { token: 'accessToken' } });
 
-    //render(<NextcloudLogin />);
     let getByText = {};
     act(() => {
-      const { getByText2 } = TestRenderer.create(<NextcloudLogin />);
+      const { getByText2 } = TestRenderer.create(<NextcloudLogin serverAddress="https://example.com" />);
       getByText = getByText2;
     });
     await waitFor(() => expect(axios.get).toHaveBeenCalledWith('pollUrl'));
@@ -75,7 +70,6 @@ describe('NextcloudLogin', () => {
 
 describe('ServerAddressInput', () => {
   it('handles user input for the server address', () => {
-    //const { getByPlaceholderText } = render(<ServerAddressInput />);
     let getByPlaceholderText = {};
     act(() => {
       const { getByPlaceholderText2 } = TestRenderer.create(<ServerAddressInput />);
@@ -87,7 +81,6 @@ describe('ServerAddressInput', () => {
   });
 
   it('passes the server address to NextcloudLogin', () => {
-    //const { getByPlaceholderText, getByText } = render(<ServerAddressInput />);
     let getByPlaceholderText = {};
     let getByText = {};
     act(() => {

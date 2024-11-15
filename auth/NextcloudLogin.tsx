@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as WebBrowser from 'expo-web-browser';
+import { View, Button } from 'react-native';
 
-const NextcloudLogin = () => {
+const NextcloudLogin = ({ serverAddress }) => {
   const [loginUrl, setLoginUrl] = useState('');
   const [pollUrl, setPollUrl] = useState('');
   const [accessToken, setAccessToken] = useState('');
 
-  useEffect(() => {
-    const initializeLoginFlow = async () => {
-      try {
-        const response = await axios.post('<server>/index.php/login/flow');
-        console.log(response.data);
-        setLoginUrl(response.data.login);
-        setPollUrl(response.data.poll);
-      } catch (error) {
-        console.error('Error initializing login flow:', error);
-      }
-    };
-
-    initializeLoginFlow();
-  }, []);
+  const initializeLoginFlow = async () => {
+    try {
+      const response = await axios.post(`${serverAddress}/index.php/login/v2`); 
+      console.log(response.data);
+      //setLoginUrl(response.data.login); //este nao eh o problema
+      console.log('vai 1');
+      setPollUrl(response.data.poll);
+      console.log('vai 2');
+    } catch (error) {
+      console.error('Error initializing login flow:', error);
+    }
+  };
 
   const openLoginUrl = async () => {
     try {
@@ -57,9 +56,10 @@ const NextcloudLogin = () => {
   }, [accessToken]);
 
   return (
-    <div>
-      <button onClick={openLoginUrl}>Login with Nextcloud</button>
-    </div>
+    <View>
+      <Button onPress={initializeLoginFlow} title="Initialize Login Flow" />
+      <Button onPress={openLoginUrl} title="Login with Nextcloud" />
+    </View>
   );
 };
 
