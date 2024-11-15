@@ -15,16 +15,9 @@ const NextcloudLogin = ({ serverAddress }) => {
       const response = await axios.post(`${serverAddress}/index.php/login/v2`); 
       console.log(response.data);
       setLoginUrl(response.data.login);
-<<<<<<< HEAD
+
       setPollUrl(response.data.poll.endpoint);
       setPollToken(response.data.poll.token);
-=======
-      console.log('vai 1');
-      setPollUrl(response.data.poll.endpoint);
-      console.log('vai 2');
-      setPollToken(response.data.poll.token);
-      console.log('vai 3');
->>>>>>> origin/nextcloud-connection-quase
     } catch (error) {
       console.error('Error initializing login flow:', error);
     }
