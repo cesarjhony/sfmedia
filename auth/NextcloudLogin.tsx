@@ -6,16 +6,19 @@ import { View, Button } from 'react-native';
 const NextcloudLogin = ({ serverAddress }) => {
   const [loginUrl, setLoginUrl] = useState('');
   const [pollUrl, setPollUrl] = useState('');
+  const [pollToken, setPollToken] = useState('');
   const [accessToken, setAccessToken] = useState('');
 
   const initializeLoginFlow = async () => {
     try {
       const response = await axios.post(`${serverAddress}/index.php/login/v2`); 
       console.log(response.data);
-      //setLoginUrl(response.data.login); //este nao eh o problema
+      setLoginUrl(response.data.login);
       console.log('vai 1');
-      setPollUrl(response.data.poll);
+      setPollUrl(response.data.poll.endpoint);
       console.log('vai 2');
+      setPollToken(response.data.poll.token);
+      console.log('vai 3');
     } catch (error) {
       console.error('Error initializing login flow:', error);
     }
@@ -32,20 +35,30 @@ const NextcloudLogin = ({ serverAddress }) => {
   useEffect(() => {
     const pollServer = async () => {
       try {
-        const response = await axios.get(pollUrl);
+        const response = await axios.post(pollUrl, `token=${pollToken}`, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        });
         if (response.status === 200) {
+          console.log(`login realizado token=${response.data.token}`);
           setAccessToken(response.data.token);
         }
       } catch (error) {
+        if (error.response.status === 404) {
+          console.log('Error 404: faça login');
+          console.log(`token=${pollToken}`);
+
+        }else
         console.error('Error polling server:', error);
       }
     };
 
-    if (pollUrl) {
+    if (pollUrl && pollToken) {
       const interval = setInterval(pollServer, 5000);
       return () => clearInterval(interval);
     }
-  }, [pollUrl]);
+  }, [pollUrl, pollToken]);
 
   useEffect(() => {
     if (accessToken) {
