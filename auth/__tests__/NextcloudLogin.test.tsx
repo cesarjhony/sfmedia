@@ -3,6 +3,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import TestRenderer from 'react-test-renderer';
 import axios from 'axios';
 import * as WebBrowser from 'expo-web-browser';
+import * as SecureStore from 'expo-secure-store';
 import NextcloudLogin from '../NextcloudLogin';
 import ServerAddressInput from '../ServerAddressInput';
 
@@ -10,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 
 jest.mock('axios');
 jest.mock('expo-web-browser');
+jest.mock('expo-secure-store');
 
 describe('NextcloudLogin', () => {
   it('initializes the login flow', async () => {
@@ -64,7 +66,7 @@ describe('NextcloudLogin', () => {
     });
     await waitFor(() => expect(axios.get).toHaveBeenCalledWith('pollUrl'));
     await waitFor(() => expect(axios.get).toHaveBeenCalledTimes(1));
-    // Add your secure storage mock and test here
+    await waitFor(() => expect(SecureStore.setItemAsync).toHaveBeenCalledWith('nextcloudAccessToken', 'accessToken'));
   });
 });
 
