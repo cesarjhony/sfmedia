@@ -1,0 +1,6 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "postCreateCommand": "npm install --global @expo/ngrok@^4.1.0",
+  "features": {
+  }
+}
