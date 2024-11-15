@@ -34,29 +34,20 @@ const NextcloudLogin = ({ serverAddress }) => {
   useEffect(() => {
     const pollServer = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.post(pollUrl, {
           token: pollToken
         });
         if (response.status === 200) {
-          console.log('login REALIZADO')
-=======
-        const response = await axios.post(pollUrl, `token=${pollToken}`, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        });
-        if (response.status === 200) {
-          console.log(`login realizado token=${response.data.token}`);
->>>>>>> origin/nextcloud-connection-quase
+          console.log('login REALIZADO');
+          console.log(response.data)
+
           setAccessToken(response.data.token);
-          await SecureStore.setItemAsync('nextcloudAccessToken', response.data.token);
+          await SecureStore.setItemAsync('nextcloudServer', response.data.server);
           await SecureStore.setItemAsync('nextcloudLoginName', response.data.loginName);
           await SecureStore.setItemAsync('nextcloudAppPassword', response.data.appPassword);
         }
       } catch (error) {
-<<<<<<< HEAD
-        if(error.response.status===404)
+        if(error && error.response && error.response.status===404)
           console.log('faça login')
         else
           console.error('Error polling server:', error);
@@ -76,21 +67,7 @@ const NextcloudLogin = ({ serverAddress }) => {
     };
 
     checkStoredCredentials();
-=======
-        if (error.response.status === 404) {
-          console.log('Error 404: faça login');
-          console.log(`token=${pollToken}`);
 
-        }else
-        console.error('Error polling server:', error);
-      }
-    };
-
-    if (pollUrl && pollToken) {
-      const interval = setInterval(pollServer, 5000);
-      return () => clearInterval(interval);
-    }
->>>>>>> origin/nextcloud-connection-quase
   }, [pollUrl, pollToken]);
 
   useEffect(() => {
